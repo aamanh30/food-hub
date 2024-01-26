@@ -1,0 +1,13 @@
+<div class="footer-section row text-center p-2">
+  <div *ngFor="let tile of tiles" class="col">
+    <a [routerLink]="tile.link" routerLinkActive="router-link-active">
+      <img
+        class="image-xs"
+        [alt]="tile.name"
+        [src]="tile.image"
+        [title]="tile.name"
+      />
+      <p>{{ tile.name | titlecase }}</p>
+    </a>
+  </div>
+</div>

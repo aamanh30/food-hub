@@ -1,0 +1,16 @@
+.tile-card {
+    margin: 1rem 0rem;
+    .how-to-use-section {
+        border-collapse: collapse;
+        .instruction-item {
+            border-style: dotted;
+            border-bottom: 0;
+            &:nth-child(even) {
+                margin: 0 -0.2rem;
+            }
+            .image-sm {
+                max-width: 3.5rem;
+            }
+        }
+    }    
+}
