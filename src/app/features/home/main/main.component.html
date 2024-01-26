@@ -1,0 +1,43 @@
+<section class="section text-center">
+  <h2 class="text-secondary">What's on you mind?</h2>
+  <div class="row">
+    <div *ngFor="let tile of tiles" class="col-6">
+      <mat-card class="tile-card">
+        <mat-card-content>
+          <img
+            mat-card-sm-image
+            [src]="tile.image"
+            [alt]="tile.name"
+            [title]="tile.name"
+          />
+          <p class="text-secondary">{{ tile.name | titlecase }}</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <mat-card class="tile-card">
+    <mat-card-content>
+      <div class="text-center">
+        <h3>How to use the app?</h3>
+      </div>
+      <div class="how-to-use-section row text-center">
+        <div
+          *ngFor="let instruction of instructions"
+          class="col instruction-item py-5"
+        >
+          <img
+            class="image-sm"
+            [alt]="instruction.subtitle"
+            [src]="instruction.image"
+            [title]="instruction.subtitle"
+          />
+          <h2>{{ instruction.title | titlecase }}</h2>
+          <p>{{ instruction.subtitle | titlecase }}</p>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</section>
