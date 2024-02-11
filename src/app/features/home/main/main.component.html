@@ -2,17 +2,19 @@
   <h2 class="text-secondary">What's on you mind?</h2>
   <div class="row">
     <div *ngFor="let tile of tiles" class="col-6">
-      <mat-card class="tile-card">
-        <mat-card-content>
-          <img
-            mat-card-sm-image
-            [src]="tile.image"
-            [alt]="tile.name"
-            [title]="tile.name"
-          />
-          <p class="text-secondary">{{ tile.name | titlecase }}</p>
-        </mat-card-content>
-      </mat-card>
+      <a [routerLink]="tile.link" routerLinkActive="router-link-active">
+        <mat-card class="tile-card">
+          <mat-card-content>
+            <img
+              mat-card-sm-image
+              [src]="tile.image"
+              [alt]="tile.name"
+              [title]="tile.name"
+            />
+            <p class="text-secondary">{{ tile.name | titlecase }}</p>
+          </mat-card-content>
+        </mat-card>
+      </a>
     </div>
   </div>
 </section>
