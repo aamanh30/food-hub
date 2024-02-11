@@ -1,3 +1,5 @@
-import { Tile } from './tile';
-
-export type TileLink = Tile & { link: string };
+export type TileLink = {
+  name: string;
+  image: string;
+  link: string;
+};
