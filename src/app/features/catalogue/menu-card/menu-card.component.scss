@@ -1,0 +1,23 @@
+.menu-card {
+  position: relative;
+  .best-seller-label {
+    display: block;
+    min-height: 2rem;
+    width: 20%;
+    background-image: url('../../../../assets/images/best-seller-label.png');
+    background-position: center center;
+    background-size: cover;
+  }
+  .menu-card-img {
+    max-width: 100%;
+    border-radius: 50%;
+  }
+  .more-details-link {
+    border-radius: 2.5rem;
+  }
+  .add-to-cart-btn {
+    min-width: 50%;
+    margin-top: -5%;
+    font-size: 1.05rem;
+  }
+}

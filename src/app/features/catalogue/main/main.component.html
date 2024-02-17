@@ -1,0 +1,15 @@
+<section class="section">
+  <div class="row">
+    <div
+      *ngFor="
+        let menuItem of menuItems | activeCategory : (activeCategory$ | async)
+      "
+      class="col-12 my-3"
+    >
+      <app-menu-card
+        [menuItem]="menuItem"
+        (menuItemSelected)="onMenuItemSelected($event)"
+      ></app-menu-card>
+    </div>
+  </div>
+</section>

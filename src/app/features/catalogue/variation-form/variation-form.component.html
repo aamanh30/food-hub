@@ -1,0 +1,119 @@
+<mat-stepper #stepper>
+  <mat-step *ngIf="customizations" [stepControl]="customizations">
+    <form [formGroup]="customizations | formGroup">
+      <div class="row">
+        <div class="col-12">
+          <h4 class="my-0">Choose from variant</h4>
+          <p>Select any 1</p>
+        </div>
+      </div>
+
+      <div *ngIf="menuItem" class="row">
+        <div class="col-12 bg-white rounded-3 p-3">
+          <table class="table table-borderless">
+            <tbody>
+              <ng-container
+                *ngFor="
+                  let customization of menuItem.customizations;
+                  let i = index
+                "
+              >
+                <tr class="row">
+                  <th class="col-6" scope="row">
+                    {{ customization['title'] }}
+                    <br />
+                    ({{ customization['quantity'] | titlecase }})
+                  </th>
+                  <td class="col text-end">
+                    {{ customization['price'] | currency : 'INR' }}
+                  </td>
+                  <td class="col text-end">
+                    <input
+                      type="radio"
+                      name="selected"
+                      (change)="onCustomizationChanged(i)"
+                    />
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12 my-5 bg-white p-3">
+          <div class="row align-items-center">
+            <div class="col-5">STEP 1/2</div>
+            <div class="col-7">
+              <button
+                mat-button
+                matStepperNext
+                class="w-100 btn btn-success"
+                [disabled]="customizations.invalid"
+              >
+                Continue
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </mat-step>
+
+  <mat-step [stepControl]="addOns">
+    <div class="row">
+      <div class="col-12">
+        <h4 class="my-0">Choose From Soft Drink for</h4>
+        <p>Select upto {{ menuItem?.maxAddOn }}</p>
+      </div>
+    </div>
+
+    <div *ngIf="menuItem" class="row">
+      <div class="col-12 bg-white rounded-3 p-3">
+        <table class="table table-borderless">
+          <tbody>
+            <tr
+              *ngFor="let addOn of menuItem.addOns; let i = index"
+              class="row"
+            >
+              <th class="col-6" scope="row">
+                {{ addOn.title }}
+              </th>
+              <td class="col text-end">
+                {{ addOn.price | currency : 'INR' }}
+              </td>
+              <td class="col text-end">
+                <input
+                  type="checkbox"
+                  name="selected"
+                  [checked]="addOn.selected"
+                  (change)="onAddOnsChanged(i, $event)"
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12 my-5 bg-white p-3">
+        <div class="row align-items-center">
+          <div class="col-5"></div>
+          <div class="col-7">
+            <button
+              mat-button
+              matStepperNext
+              class="w-100 btn btn-success"
+              [disabled]="addOns.invalid"
+              (click)="onAddItem()"
+            >
+              Add Item
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-step>
+</mat-stepper>

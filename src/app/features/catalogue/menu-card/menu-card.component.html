@@ -1,0 +1,45 @@
+<mat-card *ngIf="menuItem" class="menu-card">
+  <mat-card-content>
+    <div class="row">
+      <div class="col-8 position-relative">
+        <span *ngIf="menuItem.isBestSeller" class="best-seller-label"></span>
+        <h2 class="font-weight-bold">{{ menuItem.title }}</h2>
+        <p>{{ menuItem.price | currency : 'INR' }}</p>
+
+        <p>
+          <span class="font-weight-bold text-success menu-item-rating"
+            >&bigstar; {{ menuItem.rating?.rate }}</span
+          >
+          <span class="text-secondary">({{ menuItem.rating?.count }})</span>
+        </p>
+
+        <button
+          mat-button
+          mat-raised-button
+          class="btn border more-details-link"
+        >
+          More Details &#8250;
+        </button>
+      </div>
+
+      <div class="col-4 text-center">
+        <img
+          class="menu-card-img"
+          [alt]="menuItem.title"
+          [src]="menuItem.image"
+        />
+
+        <button
+          mat-button
+          mat-raised-button
+          class="btn btn-light border add-to-cart-btn text-success"
+          (click)="onAdd(menuItem)"
+        >
+          ADD
+        </button>
+
+        <p *ngIf="menuItem.isCustomizable">Customizable</p>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
