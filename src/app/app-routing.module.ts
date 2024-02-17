@@ -12,31 +12,52 @@ const routes: Routes = [
         loadChildren: () =>
           import('./features/home/home.module').then(
             ({ HomeModule }) => HomeModule
-          ),
+          )
       },
       {
         path: 'error',
         loadChildren: () =>
           import('./features/error/error.module').then(
             ({ ErrorModule }) => ErrorModule
-          ),
+          )
+      },
+      {
+        path: 'cart',
+        loadChildren: () =>
+          import('./features/cart/cart.module').then(
+            ({ CartModule }) => CartModule
+          )
+      },
+      {
+        path: 'auth',
+        loadChildren: () =>
+          import('./features/auth/auth.module').then(
+            ({ AuthModule }) => AuthModule
+          )
+      },
+      {
+        path: ':category',
+        loadChildren: () =>
+          import('./features/catalogue/catalogue.module').then(
+            ({ CatalogueModule }) => CatalogueModule
+          )
       },
       {
         path: '',
         redirectTo: 'home',
-        pathMatch: 'full',
-      },
-    ],
+        pathMatch: 'full'
+      }
+    ]
   },
   {
     path: '**',
     redirectTo: 'error',
-    pathMatch: 'full',
-  },
+    pathMatch: 'full'
+  }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, { useHash: true })],
-  exports: [RouterModule],
+  exports: [RouterModule]
 })
 export class AppRoutingModule {}
