@@ -20,7 +20,7 @@ export class SignUpComponent implements OnInit {
         undefined,
         [Validators.required, Validators.minLength(8)]
       ],
-      officialEmail: [undefined, [Validators.email]],
+      officeEmail: [undefined, [Validators.email]],
       dob: [undefined],
       location: [undefined]
     });
