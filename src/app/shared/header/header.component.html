@@ -1,7 +1,7 @@
 <section class="header-section row">
   <div class="col">
-    <nav class="navbar">
-      <div class="container">
+    <div class="container">
+      <nav class="navbar navbar-light bg-light justify-content-between">
         <a class="navbar-brand" [routerLink]="['/']" routerLinkActive="active">
           <img
             src="assets/images/food-hub.png"
@@ -11,7 +11,26 @@
           />
           Food Hub
         </a>
-      </div>
-    </nav>
+
+        <ul class="list-inline">
+          <li class="list-inline-item">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              [routerLink]="['/auth/sign-up']"
+              >Sign Up</a
+            >
+          </li>
+          <li class="list-inline-item">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              [routerLink]="['/auth/sign-in']"
+              >Sign In</a
+            >
+          </li>
+        </ul>
+      </nav>
+    </div>
   </div>
 </section>
