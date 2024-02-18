@@ -19,17 +19,21 @@ export class CartMainComponent implements OnInit {
       map(cartItems => {
         const originalItemsTotal = cartItems
           .filter(cartItem => !cartItem.isCustomizable)
-          .map(cartItems => cartItems.price)
+          .map(
+            cartItem => (cartItem.price ?? 1) * (cartItem.totalQuantity ?? 1)
+          )
           .reduce((total: number, price) => total + (price ?? 0), 0);
         const customizedItemsTotal = cartItems
           .filter(cartItem => cartItem.isCustomizable)
-          .map(cartItems => {
-            const customizationTotal = cartItems.customizations?.find(
+          .map(cartItem => {
+            const customizationTotal = cartItem.customizations?.find(
               customization => customization.selected
             );
-            const addOnTotal = (cartItems.addOns ?? [])
+            const addOnTotal = (cartItem.addOns ?? [])
               .filter(addOns => addOns.selected)
-              .map(addOns => addOns.price)
+              .map(
+                addOns => (addOns.price ?? 1) * (cartItem.totalQuantity ?? 1)
+              )
               .reduce((total: number, price) => total + (price ?? 0), 0);
             return (customizationTotal?.price ?? 0) + addOnTotal;
           })

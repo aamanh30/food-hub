@@ -46,7 +46,10 @@
             </h2>
             <ng-container *ngFor="let customization of cartItem.customizations">
               <p *ngIf="customization.selected">
-                {{ customization.price | currency : 'INR' }}
+                {{
+                  (cartItem.totalQuantity ?? 1) * customization.price
+                    | currency : 'INR'
+                }}
               </p>
             </ng-container>
           </div>
@@ -62,7 +65,6 @@
         </div>
 
         <div *ngIf="cartItem.addOns?.length" class="col-12">
-          <h2>Add Ons for {{ cartItem.title }}</h2>
           <table class="table table-borderless">
             <tbody>
               <tr *ngFor="let addOn of cartItem.addOns" class="row">
@@ -71,7 +73,10 @@
                     {{ addOn.title }}
                   </td>
                   <td class="col text-end">
-                    {{ addOn.price | currency : 'INR' }}
+                    {{
+                      (cartItem.totalQuantity ?? 1) * (addOn.price ?? 1)
+                        | currency : 'INR'
+                    }}
                   </td>
                 </ng-container>
               </tr>
@@ -85,7 +90,7 @@
       <mat-card class="col-12">
         <mat-card-content>
           <div class="row">
-            <div class="col">Total</div>
+            <div class="col fw-bold">Total</div>
             <div class="col text-end fw-bold">
               {{ cartTotal$ | async | currency : 'INR' }}
             </div>
