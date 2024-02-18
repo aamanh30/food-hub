@@ -1,0 +1,106 @@
+<section *ngIf="{ cartItems: cartItems$ | async } as ctx" class="section">
+  <div class="row">
+    <div class="col my-3">
+      <h2 class="text-secondary">My Cart</h2>
+    </div>
+  </div>
+
+  <article *ngIf="ctx.cartItems?.length" class="cart-details">
+    <div *ngFor="let cartItem of ctx.cartItems" class="row my-2">
+      <mat-card class="col-12">
+        <mat-card-content>
+          <ng-container
+            *ngIf="
+              cartItem.isCustomizable;
+              then customizedItem;
+              else originalItem
+            "
+          ></ng-container>
+        </mat-card-content>
+      </mat-card>
+      <ng-template #originalItem>
+        <div class="row">
+          <div class="col-8 position-relative">
+            <h2 class="fw-bold">
+              {{ cartItem.title }}
+            </h2>
+            <p>{{ cartItem.price | currency : 'INR' }}</p>
+          </div>
+
+          <div class="col-4 text-center">
+            <img
+              class="img-thumbnail border-0"
+              [alt]="cartItem.title"
+              [src]="cartItem.image"
+              [title]="cartItem.title"
+            />
+          </div>
+        </div>
+      </ng-template>
+
+      <ng-template #customizedItem>
+        <div class="row">
+          <div class="col-8 position-relative">
+            <h2 class="fw-bold">
+              {{ cartItem.title }}
+            </h2>
+            <ng-container *ngFor="let customization of cartItem.customizations">
+              <p *ngIf="customization.selected">
+                {{ customization.price | currency : 'INR' }}
+              </p>
+            </ng-container>
+          </div>
+
+          <div class="col-4 text-center">
+            <img
+              class="img-thumbnail border-0"
+              [alt]="cartItem.title"
+              [src]="cartItem.image"
+              [title]="cartItem.title"
+            />
+          </div>
+        </div>
+
+        <div *ngIf="cartItem.addOns?.length" class="col-12">
+          <h2>Add Ons for {{ cartItem.title }}</h2>
+          <table class="table table-borderless">
+            <tbody>
+              <tr *ngFor="let addOn of cartItem.addOns" class="row">
+                <ng-container *ngIf="addOn.selected">
+                  <td class="col">
+                    {{ addOn.title }}
+                  </td>
+                  <td class="col text-end">
+                    {{ addOn.price | currency : 'INR' }}
+                  </td>
+                </ng-container>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </ng-template>
+    </div>
+
+    <div class="row my-2">
+      <mat-card class="col-12">
+        <mat-card-content>
+          <div class="row">
+            <div class="col">Total</div>
+            <div class="col text-end fw-bold">
+              {{ cartTotal$ | async | currency : 'INR' }}
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </article>
+
+  <div *ngIf="!ctx.cartItems?.length" class="row">
+    <div class="col-12">
+      <p class="text-secondary">No items found in cart</p>
+      <a [routerLink]="['/catalogue']" routerLinkActive="router-link-active"
+        >Go To Catalogue</a
+      >
+    </div>
+  </div>
+</section>
