@@ -9,6 +9,7 @@ import { MenuItem } from '../../../shared/models';
 export class MenuCardComponent {
   @Output() menuItemSelected = new EventEmitter<MenuItem>();
   @Input() menuItem: MenuItem | undefined;
+  @Input() isAddedToCart = false;
 
   onAdd(menuItem: MenuItem): void {
     this.menuItemSelected.emit(menuItem);

@@ -8,6 +8,7 @@
     >
       <app-menu-card
         [menuItem]="menuItem"
+        [isAddedToCart]="!!(isAddedToCart(menuItem.id) | async)"
         (menuItemSelected)="onMenuItemSelected($event)"
       ></app-menu-card>
     </div>

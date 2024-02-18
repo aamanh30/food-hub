@@ -3,11 +3,11 @@
     <div class="row">
       <div class="col-8 position-relative">
         <span *ngIf="menuItem.isBestSeller" class="best-seller-label"></span>
-        <h2 class="font-weight-bold">{{ menuItem.title }}</h2>
+        <h2 class="fw-bold">{{ menuItem.title }}</h2>
         <p>{{ menuItem.price | currency : 'INR' }}</p>
 
         <p>
-          <span class="font-weight-bold text-success menu-item-rating"
+          <span class="fw-bold text-success menu-item-rating"
             >&bigstar; {{ menuItem.rating?.rate }}</span
           >
           <span class="text-secondary">({{ menuItem.rating?.count }})</span>
@@ -30,6 +30,7 @@
         />
 
         <button
+          *ngIf="!isAddedToCart"
           mat-button
           mat-raised-button
           class="btn btn-light border add-to-cart-btn text-success"

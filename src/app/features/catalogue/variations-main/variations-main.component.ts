@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MenuItemDetailsService } from './menu-item-details.service';
 import { EMPTY, Observable, take, tap } from 'rxjs';
@@ -12,9 +12,12 @@ import {
   AbstractControl,
   FormBuilder,
   UntypedFormGroup,
-  ValidationErrors
+  Validators
 } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { MatStepper } from '@angular/material/stepper';
+import { CartItemsService } from '../../cart/cart-main/cart-items.service';
+import { LinkRendererComponent } from 'src/app/shared/link-renderer/link-renderer.component';
 
 @Component({
   selector: 'app-variations-main',
@@ -22,21 +25,25 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./variations-main.component.scss']
 })
 export class VariationsMainComponent implements OnInit {
+  @ViewChild('stepper') stepper: MatStepper | undefined;
   menuItem$: Observable<CustomizedMenuItem | undefined> = EMPTY;
   form = new UntypedFormGroup({});
+  selectedVariation: Customization | undefined;
 
   constructor(
     private readonly menuItemDetailsService: MenuItemDetailsService,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly fb: FormBuilder,
-    private readonly snackBar: MatSnackBar
+    private readonly snackBar: MatSnackBar,
+    private readonly cartItemsService: CartItemsService
   ) {}
 
   ngOnInit(): void {
     this.form = this.fb.group({
       customizations: this.fb.array([]),
-      addOns: this.fb.array([])
+      addOns: this.fb.array([]),
+      totalQuantity: this.fb.control(1, [Validators.required])
     });
 
     const id = this.route.snapshot.params['id'];
@@ -96,7 +103,7 @@ export class VariationsMainComponent implements OnInit {
                 }
 
                 this.openSnackBar(
-                  `Max allowed add ons crossed! Max allowed is ${menuItem.maxAddOn}`,
+                  'You have reached the maximum limit of addons for this item.',
                   'Error'
                 );
                 return {
@@ -117,11 +124,45 @@ export class VariationsMainComponent implements OnInit {
     this.router.navigate([`/catalogue/${category}`]);
   }
 
-  openSnackBar(message: string, action: string) {
-    this.snackBar.open(message, action);
+  onPrevious() {}
+
+  openSnackBar(
+    message: string,
+    action: string,
+    config: MatSnackBarConfig = { duration: 2000 }
+  ) {
+    this.snackBar.open(message, action, config);
   }
 
-  onAddItem({ customizations, addOns }: Partial<CustomizedMenuItem>): void {
-    this.router.navigate(['/cart']);
+  onAddItem(menuItem: Partial<CustomizedMenuItem>): void {
+    this.cartItemsService.updateCartItems(menuItem);
+    this.snackBar.openFromComponent(LinkRendererComponent, {
+      data: {
+        message: 'Menu item added successfully to cart',
+        routerLink: '/cart',
+        linkText: 'View Cart'
+      }
+    });
+    this.router.navigate([`/catalogue/${menuItem.category}`]);
+  }
+
+  onVariationSelected(): void {
+    const { value } = this.form.controls['customizations'];
+    this.selectedVariation = Array.isArray(value)
+      ? value.find(customization => customization.selected)
+      : undefined;
+  }
+
+  onTotalQuantityChanged(totalQuantity: number): void {
+    if (totalQuantity > 0) {
+      this.form.patchValue({ totalQuantity });
+      return;
+    }
+
+    this.menuItem$
+      .pipe(take(1))
+      .subscribe(menuItem =>
+        this.router.navigate([`/catalogue/${menuItem?.category}`])
+      );
   }
 }

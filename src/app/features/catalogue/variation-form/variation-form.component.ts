@@ -2,9 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import {
   AbstractControl,
   FormArray,
-  FormControl,
-  FormGroup,
-  UntypedFormArray,
+  UntypedFormControl,
   UntypedFormGroup
 } from '@angular/forms';
 import {
@@ -20,10 +18,14 @@ import {
 })
 export class VariationFormComponent {
   @Output() addItem = new EventEmitter<Partial<CustomizedMenuItem>>();
+  @Output() variationSelected = new EventEmitter<void>();
+  @Output() totalQuantityChanged = new EventEmitter<number>();
   @Input() menuItem: CustomizedMenuItem | undefined;
-  @Input() customizations: AbstractControl<unknown, unknown> | null =
+  @Input() customizations: AbstractControl<unknown, unknown> =
     new UntypedFormGroup({});
   @Input() addOns: AbstractControl<unknown, unknown> = new UntypedFormGroup({});
+  @Input() totalQuantity: AbstractControl<number, number> =
+    new UntypedFormControl(undefined);
 
   onCustomizationChanged(index: number): void {
     const customizations = (<Customization[]>(
@@ -50,8 +52,20 @@ export class VariationFormComponent {
 
   onAddItem(): void {
     this.addItem.emit({
+      ...this.menuItem,
       customizations: <Customization[]>this.customizations?.value ?? [],
-      addOns: <AddOn[]>this.addOns?.value ?? []
+      addOns: <AddOn[]>this.addOns?.value ?? [],
+      totalQuantity: this.totalQuantity.value
     });
+  }
+
+  onNext(): void {
+    this.variationSelected.emit();
+  }
+
+  onChangeQuantity(changeInQuantity: number): void {
+    this.totalQuantityChanged.emit(
+      <number>(this.totalQuantity.value ?? 0) + changeInQuantity
+    );
   }
 }
