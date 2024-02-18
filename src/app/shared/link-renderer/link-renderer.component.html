@@ -1,0 +1,10 @@
+<span
+  >{{ data.message }}
+  <a
+    class="text-primary"
+    routerLinkActive="router-link-active"
+    [routerLink]="data['routerLink']"
+    (click)="onClick()"
+    >{{ data['linkText'] }}</a
+  ></span
+>

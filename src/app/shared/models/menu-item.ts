@@ -8,6 +8,7 @@ export type MenuItem = {
   category: MenuCategory;
   isBestSeller: boolean;
   rating?: Rating;
+  totalQuantity?: number;
   image: string;
   isCustomizable: boolean;
 };
