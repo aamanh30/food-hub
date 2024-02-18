@@ -36,7 +36,7 @@ const routes: Routes = [
           )
       },
       {
-        path: ':category',
+        path: 'catalogue',
         loadChildren: () =>
           import('./features/catalogue/catalogue.module').then(
             ({ CatalogueModule }) => CatalogueModule
